@@ -16,6 +16,10 @@ const StatisticLine = ({ text, value }) => {
 
 const Statistics = ({good, bad, neutral}) => {
   if (good + neutral + bad === 0) {
+    console.log('good', good)
+    console.log('bad', bad)
+    console.log('neutral', neutral)
+
     return (<p>No feedback given</p>)
   }
 
@@ -31,7 +35,7 @@ const Statistics = ({good, bad, neutral}) => {
           <StatisticLine text='bad' value={bad} />
           <StatisticLine text='all' value={all} />
           <StatisticLine text='average' value={average} />
-          <StatisticLine text='positive' value={positive + ' %'} />
+          <StatisticLine text='positive' value={positive + " %"} />
       </tbody>
     </table>
   )
