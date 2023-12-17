@@ -1,5 +1,6 @@
-
 import { useState } from 'react'
+
+const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>
 
 const App = () => {
   const anecdotes = [
@@ -14,10 +15,29 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  // random whole number between [0, 8) - rounds down to 7 when over
+  //const randnum = Math.floor(Math.random() * anecdotes.length)
+  //console.log(randnum)
+
+  const handleClick = () => setSelected(Math.floor(Math.random() * anecdotes.length))
+
+
+  const [voted, setVoted] = useState(new Uint8Array(anecdotes.length))
+  
+  const handleVoteClick = () => {
+    const copy = { ...voted }
+    copy[selected] += 1
+    setVoted(copy)
+  }
 
   return (
     <div>
       {anecdotes[selected]}
+      <br></br>
+      has {voted[selected]} votes
+      <br></br>
+      <Button handleClick={handleVoteClick} text='vote' />
+      <Button handleClick={handleClick} text='next anecdote' />
     </div>
   )
 }
