@@ -1,5 +1,8 @@
 import { useState } from 'react'
 
+
+const Header = ({ text }) => <h2>{text}</h2>
+
 const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>
 
 const App = () => {
@@ -15,29 +18,47 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
-  // random whole number between [0, 8) - rounds down to 7 when over
-  //const randnum = Math.floor(Math.random() * anecdotes.length)
-  //console.log(randnum)
 
-  const handleClick = () => setSelected(Math.floor(Math.random() * anecdotes.length))
-
+  const handleClick = () => {
+    // random integer in range [0, 8)
+    let rnum = Math.floor(Math.random() * anecdotes.length)
+    while (rnum === selected) {
+      rnum = Math.floor(Math.random() * anecdotes.length)
+    }
+    setSelected(rnum)
+  }
 
   const [voted, setVoted] = useState(new Uint8Array(anecdotes.length))
-  
+
+  // states to keep track of the anecdote with the most votes
+  const [mostVotedIndex, setMostVotedIndex] = useState(new String()) // highest vote count for an anecdote
+  const [mostVotes, setMostVotes] = useState(0)
+
   const handleVoteClick = () => {
     const copy = { ...voted }
     copy[selected] += 1
+
+    // update the most voted anecdote if needed
+    if (copy[selected] > mostVotes) {
+      console.log('mostvotes', copy[selected])
+      setMostVotes(copy[selected])
+      setMostVotedIndex(anecdotes[selected])
+    }
+
     setVoted(copy)
   }
 
   return (
     <div>
+      <Header text="Anecdote of the day" />
       {anecdotes[selected]}
       <br></br>
       has {voted[selected]} votes
       <br></br>
       <Button handleClick={handleVoteClick} text='vote' />
       <Button handleClick={handleClick} text='next anecdote' />
+      <Header text="Anecdote with most votes" />
+      {mostVotedIndex}
     </div>
   )
 }
