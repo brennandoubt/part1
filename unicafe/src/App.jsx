@@ -6,6 +6,14 @@ const Header = ({ text }) => <h1>{text}</h1>
 const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>
 
 const Statistics = ({good, bad, neutral}) => {
+  if (good + neutral + bad === 0) {
+    return (
+      <div>
+        <p>No feedback given</p>
+      </div>
+    )
+  }
+
   const all = good + neutral + bad
   const average = ((good * 1) + (neutral * 0) + (bad * -1))/all
   const positive = (good/all) * 100
